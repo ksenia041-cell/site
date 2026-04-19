@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----------------------------------------------------------------
+   BASE
+---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #020E17;
+  color: #DDF7F8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020E17;
+}
+::-webkit-scrollbar-thumb {
+  background: #148AA6;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #29C4D8;
+}
+
+/* ----------------------------------------------------------------
+   TYPOGRAPHY HELPERS
+---------------------------------------------------------------- */
+.font-display {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.font-body {
+  font-family: 'Inter', sans-serif;
+}
+
+.text-glow {
+  text-shadow:
+    0 0 40px rgba(84, 215, 230, 0.25),
+    0 0 80px rgba(84, 215, 230, 0.12);
+}
+
+/* ----------------------------------------------------------------
+   GLASS CARDS — cyan-tinted, from reference
+---------------------------------------------------------------- */
+.glass-card {
+  background: rgba(11, 94, 122, 0.14);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(143, 228, 236, 0.15);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(143, 228, 236, 0.1);
+  transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s ease;
+}
+
+.glass-card:hover {
+  background: rgba(11, 94, 122, 0.2);
+  border-color: rgba(143, 228, 236, 0.25);
+}
+
+.glass-card-featured {
+  background: linear-gradient(180deg, rgba(41, 196, 216, 0.14) 0%, rgba(11, 94, 122, 0.12) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(84, 215, 230, 0.3);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(84, 215, 230, 0.08),
+    inset 0 1px 0 rgba(143, 228, 236, 0.2);
+}
+
+.glass-card-dark {
+  background: rgba(7, 55, 78, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(143, 228, 236, 0.1);
+  box-shadow:
+    0 4px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(143, 228, 236, 0.08);
+}
+
+.glass-card-subtle {
+  background: rgba(11, 94, 122, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(143, 228, 236, 0.1);
+}
+
+/* ----------------------------------------------------------------
+   BUTTONS — aqua-glass primary + cyan-outline secondary
+---------------------------------------------------------------- */
+.btn-primary {
+  background: linear-gradient(135deg, rgba(84, 215, 230, 0.2) 0%, rgba(41, 196, 216, 0.28) 100%);
+  border: 1px solid rgba(84, 215, 230, 0.5);
+  color: #F2FBFC;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.35s ease;
+  box-shadow:
+    0 0 20px rgba(84, 215, 230, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, rgba(84, 215, 230, 0.38) 0%, rgba(41, 196, 216, 0.45) 100%);
+  border-color: rgba(84, 215, 230, 0.85);
+  box-shadow:
+    0 0 35px rgba(84, 215, 230, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(143, 228, 236, 0.32);
+  color: #8FE4EC;
+  transition: all 0.35s ease;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(143, 228, 236, 0.65);
+  color: #DDF7F8;
+  background: rgba(143, 228, 236, 0.07);
+  transform: translateY(-1px);
+}
+
+/* ----------------------------------------------------------------
+   NAV LINK
+---------------------------------------------------------------- */
+.nav-link {
+  color: rgba(189, 238, 241, 0.7);
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #8FE4EC;
+}
+
+/* ----------------------------------------------------------------
+   TAG BADGE
+---------------------------------------------------------------- */
+.tag-badge {
+  display: inline-block;
+  padding: 0.45rem 1rem;
+  border: 1px solid rgba(84, 215, 230, 0.35);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8FE4EC;
+  background: rgba(84, 215, 230, 0.07);
+  backdrop-filter: blur(10px);
+}
+
+.section-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(143, 228, 236, 0.85);
+}
+
+/* ----------------------------------------------------------------
+   FORM FIELDS
+---------------------------------------------------------------- */
+.form-field {
+  width: 100%;
+  padding: 0.85rem 1.1rem;
+  background: rgba(2, 14, 23, 0.35);
+  border: 1px solid rgba(143, 228, 236, 0.15);
+  border-radius: 14px;
+  color: #DDF7F8;
+  outline: none;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.form-field::placeholder {
+  color: rgba(189, 238, 241, 0.4);
+}
+
+.form-field:focus {
+  border-color: rgba(84, 215, 230, 0.6);
+  background: rgba(2, 14, 23, 0.5);
+}
+
+/* ----------------------------------------------------------------
+   ANIMATIONS
+---------------------------------------------------------------- */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(8px); opacity: 1; }
+}
+
+.scroll-indicator {
+  animation: scroll-bounce 2.2s ease-in-out infinite;
+}
+
+/* FAQ details marker */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* ----------------------------------------------------------------
+   RESPONSIVE TWEAKS
+---------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}
