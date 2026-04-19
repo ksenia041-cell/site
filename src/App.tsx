@@ -184,14 +184,13 @@ export default function App() {
     },
   ];
 
-  // -------- Scroll-derived visuals (reference-zip model) --------
-  // Upper glow fades out as user scrolls down
-  const upperGlowOpacity = Math.max(0, 1 - scrollProgress * 2.3);
-  // Deep abyss overlay strengthens as user scrolls down
-  const deepOverlayOpacity = Math.min(scrollProgress * 0.55, 0.55);
+  // -------- Scroll-derived visuals --------
   // Header becomes opaque + blurred after slight scroll
   const headerScrolled = scrollProgress > 0.015;
+  // Very gentle depth boost as user scrolls (max 0.2 — stays light and airy)
+  const scrollDepthOpacity = Math.min(scrollProgress * 0.22, 0.22);
 
+  // Base: clean vertical gradient, ice-aqua → deep ocean. No radial spots.
   const bgStyle: CSSProperties = useMemo(
     () => ({
       background:
@@ -200,36 +199,34 @@ export default function App() {
     [],
   );
 
-  const bgAccentsStyle: CSSProperties = useMemo(
-    () => ({
-      background: [
-        "radial-gradient(ellipse 80% 40% at 50% 5%, rgba(141,228,236,0.28) 0%, transparent 70%)",
-        "radial-gradient(ellipse 60% 30% at 25% 20%, rgba(84,215,230,0.14) 0%, transparent 60%)",
-        "radial-gradient(ellipse 55% 55% at 75% 55%, rgba(6,39,59,0.55) 0%, transparent 80%)",
-        "radial-gradient(ellipse 90% 55% at 50% 92%, rgba(2,14,23,0.85) 0%, transparent 100%)",
-      ].join(", "),
-    }),
-    [],
-  );
-
-  const upperGlowStyle: CSSProperties = {
+  // Very soft top glow (single ellipse, subtle)
+  const topGlowStyle: CSSProperties = {
     background:
-      "radial-gradient(ellipse 100% 60% at 50% -5%, rgba(141,228,236,0.22) 0%, transparent 65%)",
-    opacity: upperGlowOpacity,
+      "radial-gradient(ellipse 80% 40% at 50% 5%, rgba(141,228,236,0.22) 0%, transparent 70%)",
+  };
+
+  // Soft bottom depth overlay (one ellipse only, gentle)
+  const lowerDepthStyle: CSSProperties = {
+    background:
+      "radial-gradient(ellipse 80% 50% at 50% 92%, rgba(2,14,23,0.48) 0%, transparent 100%)",
+  };
+
+  // Very slight scroll-added depth (kept small so upper palette stays light)
+  const scrollDepthStyle: CSSProperties = {
+    background: `linear-gradient(to bottom, transparent 0%, rgba(2,14,23,${scrollDepthOpacity}) 100%)`,
     transition: "opacity 0.1s linear",
   };
 
-  const depthOverlayStyle: CSSProperties = {
-    background: `linear-gradient(to bottom, transparent 0%, rgba(2,14,23,${deepOverlayOpacity}) 100%)`,
-    transition: "opacity 0.1s linear",
+  // Tint specifically under the hero text column — left side darker for white text readability
+  const heroTextShadeStyle: CSSProperties = {
+    background:
+      "linear-gradient(90deg, rgba(6,39,59,0.54) 0%, rgba(6,39,59,0.4) 32%, rgba(6,39,59,0.2) 54%, rgba(6,39,59,0) 76%)",
   };
 
-  const grainStyle: CSSProperties = {
-    backgroundImage:
-      "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
-    backgroundRepeat: "repeat",
-    backgroundSize: "220px 220px",
-    opacity: 0.035,
+  // Very soft local bloom near hero center (behind video glow area)
+  const heroCenterBloomStyle: CSSProperties = {
+    background:
+      "radial-gradient(ellipse 44% 34% at 52% 36%, rgba(84,215,230,0.18) 0%, transparent 72%)",
   };
 
   const heroAmbientGlow: CSSProperties = {
@@ -246,9 +243,9 @@ export default function App() {
   };
 
   const headerStyle: CSSProperties = {
-    background: headerScrolled ? "rgba(3, 24, 39, 0.82)" : "transparent",
-    backdropFilter: headerScrolled ? "blur(20px)" : "none",
-    WebkitBackdropFilter: headerScrolled ? "blur(20px)" : "none",
+    background: headerScrolled ? "rgba(3, 24, 39, 0.82)" : "rgba(3, 24, 39, 0.18)",
+    backdropFilter: headerScrolled ? "blur(20px)" : "blur(8px)",
+    WebkitBackdropFilter: headerScrolled ? "blur(20px)" : "blur(8px)",
     borderBottom: headerScrolled
       ? "1px solid rgba(143,228,236,0.08)"
       : "1px solid transparent",
@@ -282,12 +279,15 @@ export default function App() {
 
   return (
     <div className="min-h-screen overflow-x-hidden text-[#DDF7F8]" style={{ backgroundColor: "#020E17" }}>
-      {/* -------- DEPTH BACKGROUND STACK (fixed, reference model) -------- */}
+      {/* -------- DEPTH BACKGROUND STACK (clean, reference-matched) -------- */}
+      {/* 1. Base clean linear gradient */}
       <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -4, ...bgStyle }} />
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -3, ...bgAccentsStyle }} />
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -2, ...grainStyle }} />
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -1, ...upperGlowStyle }} />
-      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -1, ...depthOverlayStyle }} />
+      {/* 2. Very soft top glow */}
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -3, ...topGlowStyle }} />
+      {/* 3. Soft bottom depth overlay */}
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -2, ...lowerDepthStyle }} />
+      {/* 4. Gentle scroll-added depth (very subtle) */}
+      <div className="fixed inset-0 pointer-events-none" style={{ zIndex: -1, ...scrollDepthStyle }} />
 
       {/* -------- HEADER -------- */}
       <header className="sticky top-0 z-50 transition-all duration-500" style={headerStyle}>
@@ -333,7 +333,10 @@ export default function App() {
       <main className="relative" style={{ zIndex: 2 }}>
         {/* ======== HOME / HERO ======== */}
         <section id="home" className="relative pb-24 pt-10 md:pb-32 md:pt-16">
-          <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-[1.02fr_0.98fr] lg:gap-16">
+          {/* Local hero layers — behind content, in front of page background */}
+          <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0, ...heroTextShadeStyle }} />
+          <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0, ...heroCenterBloomStyle }} />
+          <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 lg:grid-cols-[1.02fr_0.98fr] lg:gap-16" style={{ zIndex: 1 }}>
             <div className="max-w-2xl">
               <div className="mb-6 inline-flex items-center rounded-full px-4 py-2 text-xs tracking-[0.18em] backdrop-blur-xl"
                 style={{
@@ -382,7 +385,7 @@ export default function App() {
                   <div className="absolute inset-0" style={videoAmbientStyle} />
                   {videoSrc ? (
                     <video
-                      className="relative z-10 h-full w-full object-cover opacity-95 mix-blend-screen"
+                      className="relative z-10 h-full w-full object-cover"
                       autoPlay
                       muted
                       loop
